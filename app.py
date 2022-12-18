@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 #SqlAlchemy Database Configuration With Mysql
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/gat'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/gat_website'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
  
 db = SQLAlchemy(app)
@@ -78,6 +78,5 @@ def insert():
  
         return render_template(url_for('insert'))
    
-
 if __name__ == '__main__':
    app.run(debug = True)
