@@ -1,13 +1,18 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-
-
+# Import for Migrations
+from flask_migrate import Migrate, migrate
+ 
 app = Flask(__name__)
+
 #SqlAlchemy Database Configuration With Mysql
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/gat_website'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
  
 db = SQLAlchemy(app)
+
+# Settings for migrations
+migrate = Migrate(app, db)
 
 #Creating model table for our CRUD database
 class Data(db.Model):
@@ -57,26 +62,25 @@ def teacherpage():
 @app.route('/insert')
 def insert():
    if request.method == 'POST':
- 
-        FirstName = request.form['FirstName']
-        LastName = request.form['LastName']
-        email = request.form['email']
-        phone = request.form['phone']
-        Gender = request.form['Gender']
-        BirthDay = request.form['BirthDay']
-        Address = request.form['Address']
-        City = request.form['City']
-        PinCode = request.form['PinCode']
-        State = request.form['State']
-        Country = request.form['Country']
- 
-        my_data = Data(FirstName, LastName, email, phone, Gender, BirthDay, Address, City, PinCode, State, Country)
-        db.session.add(my_data)
-        db.session.commit()
- 
-        flash("Events Added Successfully")
- 
-        return render_template(url_for('insert'))
+      FirstName = request.form['FirstName']
+      LastName = request.form['LastName']
+      email = request.form['email']
+      phone = request.form['phone']
+      Gender = request.form['Gender']
+      BirthDay = request.form['BirthDay']
+      Address = request.form['Address']
+      City = request.form['City']
+      PinCode = request.form['PinCode']
+      State = request.form['State']
+      Country = request.form['Country']
+
+      my_data = Data(FirstName, LastName, email, phone, Gender, BirthDay, Address, City, PinCode, State, Country)
+      db.session.add(my_data)
+      db.session.commit()
+
+      flash("Events Added Successfully")
+
+      return redirect('/insert')
    
 if __name__ == '__main__':
    app.run(debug = True)

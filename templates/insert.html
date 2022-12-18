@@ -51,8 +51,8 @@
 
 <body>
     <h2>Student Registration Form</h3>
-        <form  align="center" cellpadding="10" action="{{url_for('insert')}}" method="POST">
-           
+        <form  action="{{url_for('insert')}}" method="POST">
+           <table align="center" cellpadding="10">
             <tr>
                 <td>First Name</td>
                 <td><input type="text" name="FirstName" maxlength="50" placeholder="Ghanendra" />
@@ -232,6 +232,7 @@
                     <input type="reset" value="Reset">
                 </td>
             </tr>
+        </table>
         </form>
 </body>
 </html>
