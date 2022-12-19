@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 # Import for Migrations
-from flask_migrate import Migrate, migrate
+#from flask_migrate import Migrate, migrate
  
 app = Flask(__name__)
 
@@ -12,36 +12,70 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Settings for migrations
-migrate = Migrate(app, db)
+#migrate = Migrate(app, db)
 
-#Creating model table for our CRUD database
-class Data(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    FirstName = db.Column(db.String(100))
-    LastName = db.Column(db.String(100))
-    email = db.Column(db.String(100))
-    phone = db.Column(db.String(100))
-    Gender = db.Column(db.String(100))
-    BirthDay = db.Column(db.Date)
-    Address = db.Column(db.String(100))
-    City = db.Column(db.String(100))
-    PinCode = db.Column(db.String(100))
-    State = db.Column(db.String(100))
-    Country = db.Column(db.String(100))
+# Models
+class Profile(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	FirstName = db.Column(db.String(20), unique=False, nullable=False)
+	LastName = db.Column(db.String(20), unique=False, nullable=False)
+	email = db.Column(db.String(20),unique=False, nullable=False)
+	phone = db.Column(db.String(20),unique=False, nullable=False)
+	Gender = db.Column(db.String(20), unique=False, nullable=False)
+	BirthDay = db.Column(db.String(20),unique=False, nullable=False)
+	Address = db.Column(db.String(30), unique=False, nullable=False)
+	City = db.Column(db.String(20), unique=False, nullable=False)
+	PinCode = db.Column(db.String(20),unique=False, nullable=False)
+	State = db.Column(db.String(20), unique=False, nullable=False)
+	Country = db.Column(db.String(20), unique=False, nullable=False)
+	
+	def __repr__(self):
+		return f"FirstName : {self.FirstName},LastName : {self.LastName} email: {self.email},phone : {self.phone}, Gender: {self.Gender},BirthDay : {self.BirthDay}, Address: {self.Address},City : {self.City}, PinCode: {self.PinCode},  State: {self.State},  Country: {self.Country}"
 
-    def __init__(self, FirstName, LastName, email, phone, Gender, BirthDay, Address, City, PinCode, State, Country):
- 
-        self.FirstName = FirstName
-        self.LastName = LastName
-        self.email = email
-        self.phone = phone
-        self.Gender = Gender
-        self.BirthDay = BirthDay
-        self.Address = Address
-        self.City = City
-        self.PinCode = PinCode
-        self.State = State
-        self.Country = Country
+# function to render index page
+@app.route('/insert')
+def insert():
+	profiles = Profile.query.all()
+	return render_template('insert.html', profiles=profiles)
+
+@app.route('/add_data')
+def add_data():
+	return render_template('add_profile.html')
+
+# function to add profiles
+@app.route('/add', methods=["POST"])
+def profile():
+	FirstName = request.form.get("FirstName")
+	LastName = request.form.get("LastName")
+	email = request.form.get("email")
+	phone = request.form.get("phone")
+	Gender = request.form.get("Gender")
+	BirthDay = request.form.get("BirthDay")
+	Address = request.form.get("Address")
+	City = request.form.get("City")
+	PinCode = request.form.get("PinCode")
+	State = request.form.get("State")
+	Country = request.form.get("Country")
+
+	# create an object of the Profile class of models and
+	# store data as a row in our datatable
+	if FirstName != '' and LastName != '' and email is not None:
+		p = Profile(FirstName=FirstName, LastName=LastName, email=email, phone=phone, Gender=Gender, BirthDay=BirthDay, Address=Address, City=City, PinCode=PinCode, State=State, Country=Country)
+		db.session.add(p)
+		db.session.commit()
+		return redirect('/insert')
+	else:
+		return redirect('/insert')
+
+@app.route('/delete/<int:id>')
+def erase(id):
+	
+	# deletes the data on the basis of unique id and
+	# directs to home page
+	data = Profile.query.get(id)
+	db.session.delete(data)
+	db.session.commit()
+	return redirect('/insert')
 
 @app.route('/')
 def index():
@@ -58,29 +92,6 @@ def studentlogin():
 @app.route('/teacherpage')
 def teacherpage():
    return render_template('teacherpage.html')
-
-@app.route('/insert')
-def insert():
-   if request.method == 'POST':
-      FirstName = request.form['FirstName']
-      LastName = request.form['LastName']
-      email = request.form['email']
-      phone = request.form['phone']
-      Gender = request.form['Gender']
-      BirthDay = request.form['BirthDay']
-      Address = request.form['Address']
-      City = request.form['City']
-      PinCode = request.form['PinCode']
-      State = request.form['State']
-      Country = request.form['Country']
-
-      my_data = Data(FirstName, LastName, email, phone, Gender, BirthDay, Address, City, PinCode, State, Country)
-      db.session.add(my_data)
-      db.session.commit()
-
-      flash("Events Added Successfully")
-
-      return redirect('/insert')
    
 if __name__ == '__main__':
    app.run(debug = True)
