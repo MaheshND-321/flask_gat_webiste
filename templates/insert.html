@@ -2,28 +2,63 @@
 <html>
 <head>
 	<title>Index Page</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<style>
+	a{
+		font-weight: bold;
+		text-decoration: none;
+		color: white;
+		width: 60px;
+		height: 35px;
+		text-align: center;
+		border-radius: 20px;
+		float: right;
+		border-radius: 5px;
+		border-style: solid;
+	}
+	.add {
+		background-color: greenyellow;
+		margin-right: 100px;
+	}
+
+	.delete {
+		background-color: red;
+	}
+
+	h2 {
+		font-family: Sans-serif;
+		font-size: 35px;
+		font-style: normal;
+		font-weight: bold;
+		color: red;
+		text-align: center;
+        }
+	</style>
 </head>
 <body>
-	<h3>Profiles</h3>
-	<a href="/add_data">ADD</a>
+	<h2>Students List</h2>
+	<a class="add" href="/add_data">ADD</a>
 	<br>
-	<table>
-		<thead>
-			<th>Id</th>
-			<th>First Name</th>
-			<th>Last Name</th>
-			<th>email</th>
-			<th>phone</th>
-			<th>Gender</th>
-			<th>BirthDay</th>
-			<th>Address</th>
-			<th>City</th>
-			<th>PinCode</th>
-			<th>State</th>
-			<th>Country</th>
+	<table class="table">
+		<thead class="thead-light">
+		  <tr>
+			<th scope="col">Id</th>
+			<th scope="col">First Name</th>
+			<th scope="col">Last Name</th>
+			<th scope="col">email</th>
+			<th scope="col">phone</th>
+			<th scope="col">Gender</th>
+			<th scope="col">BirthDay</th>
+			<th scope="col">Address</th>
+			<th scope="col">City</th>
+			<th scope="col">PinCode</th>
+			<th scope="col">State</th>
+			<th scope="col">Country</th>
+		</tr>
 		</thead>
 		{% for data in profiles %}
 		<tbody>
+			<tr>
 			<td>{{data.id}}</td>
 			<td>{{data.FirstName}}</td>
 			<td>{{data.LastName}}</td>
@@ -36,9 +71,12 @@
 			<td>{{data.PinCode}}</td>
 			<td>{{data.State}}</td>
 			<td>{{data.Country}}</td>
-			<td><a href="/delete/{{data.id}}" type="button">Delete</a></td>
+			<td><a class="delete" href="/delete/{{data.id}}" type="button">Delete</a></td>
+		</tr>
 		</tbody>
 		{% endfor%}
 	</table>
 </body>
 </html>
+
+

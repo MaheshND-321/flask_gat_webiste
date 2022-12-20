@@ -1,18 +1,17 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, request, redirect
+from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
-# Import for Migrations
-#from flask_migrate import Migrate, migrate
- 
-app = Flask(__name__)
 
-#SqlAlchemy Database Configuration With Mysql
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/gat_website'
+app = Flask(__name__)
+app.debug = True
+
+# adding configuration for using a sqlite database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/gat_web'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
- 
+
+# Creating an SQLAlchemy instance
 db = SQLAlchemy(app)
 
-# Settings for migrations
-#migrate = Migrate(app, db)
 
 # Models
 class Profile(db.Model):
@@ -20,7 +19,7 @@ class Profile(db.Model):
 	FirstName = db.Column(db.String(20), unique=False, nullable=False)
 	LastName = db.Column(db.String(20), unique=False, nullable=False)
 	email = db.Column(db.String(20),unique=False, nullable=False)
-	phone = db.Column(db.String(20),unique=False, nullable=False)
+	phone = db.Column(db.String(20), nullable=False)
 	Gender = db.Column(db.String(20), unique=False, nullable=False)
 	BirthDay = db.Column(db.String(20),unique=False, nullable=False)
 	Address = db.Column(db.String(30), unique=False, nullable=False)
