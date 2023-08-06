@@ -83,11 +83,56 @@ h1{
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+.search-container {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 5px; 
+    margin-right: 5px;/* Add padding for the rounded rectangle effect */
+    align-items: center;
+    
+}
+
+input[type=text] {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    border-radius: 20px; /* Set the same border-radius as the container */
+    padding: 5px 40px 5px 10px;
+     /* Add padding for the input text */
+    
+}
+
+.search-icon {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #444;
+   margin-bottom: 5px;
+   
+     position: absolute;
+     right: -40px;
+}
+
+.search-icon:hover {
+    color: #69f05a;
+}
+
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <div class="main">
 <h2>Teacher Profile Page</h2>
+<div class="search-container">
+    <input type="text" placeholder="Search...">
+    <button class="search-icon"><i class="fas fa-search"></i></button>
+</div>
 
 <div class="card">
     <img src="{{url_for('static',filename='image/profile1.jfif')}}" alt="HOD_PIC" style="width:100%">
